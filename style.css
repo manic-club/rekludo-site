@@ -55,7 +55,8 @@ h2 { font-size: clamp(48px, 6vw, 80px); line-height: .95; margin: 12px 0 48px; }
 .hero h1 .l2 { margin-top: .12em; }
 .hero h1 .box { display: inline-block; color: var(--board); background: var(--ink); padding: .06em .12em .02em; line-height: .86; border-radius: 8px; }
 .lead { font-size: 20px; line-height: 1.5; max-width: 520px; margin: 32px 0 0; color: var(--soft); }
-.actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 40px; }
+.tagline { font-family: var(--display); text-transform: uppercase; font-weight: 800; font-size: clamp(26px, 3vw, 40px); line-height: 1.05; letter-spacing: .02em; margin: 28px 0 0; color: var(--ink); }
+.actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
 .hero .cap.note { margin-top: 22px; }
 .hero .fine { margin: 10px 0 0; font-size: 14px; color: var(--muted); }
 .hero-phone { flex: 0 1 340px; display: flex; justify-content: center; }
