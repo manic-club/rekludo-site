@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>document.documentElement.className += " js";</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Rekludo: Outguess the crowd. The social pass-and-play number quiz.</title>
 <meta name="description" content="A social pass-and-play number quiz for 3 to 8 players. Every answer is a number. Everyone guesses, the crowd's average appears next to the truth, and the closest player wins. Free for iPhone.">
@@ -30,7 +31,7 @@
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="wrap nav">
-  <a class="logo" href="/" aria-label="Rekludo home">REKLUD<span class="oslash" aria-hidden="true">O<svg viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><line x1="12" y1="88" x2="88" y2="12"/></svg></span></a>
+  <a class="logo" href="/" aria-label="Rekludo home" data-roll>REKLUD<span class="oslash" aria-hidden="true">O<svg viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><line x1="12" y1="88" x2="88" y2="12" pathLength="1"/></svg></span></a>
   <nav class="nav-links" aria-label="Main">
     <a class="cap" href="#how">How it plays</a>
     <a class="cap" href="#why">The secret</a>
@@ -42,7 +43,7 @@
 <main id="main">
   <section class="wrap hero" aria-labelledby="hero-title">
     <div class="hero-text">
-      <h1 id="hero-title"><span class="l1">Outguess</span><span class="l2">the <span class="box">crowd</span></span></h1>
+      <h1 id="hero-title" data-roll aria-label="Outguess the crowd"><span class="l1">Outguess</span><span class="l2">the <span class="box">crowd</span></span></h1>
       <p class="tagline">The social pass-and-play number quiz</p>
       <p class="hook">Every answer is a number. The crowd's average is often spookily close. Can you get closer?</p>
       <div class="actions">
@@ -134,7 +135,7 @@
 
 <footer class="foot">
   <div class="foot-in">
-    <a class="logo" href="/" aria-label="Rekludo home">REKLUD<span class="oslash" aria-hidden="true">O<svg viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><line x1="12" y1="88" x2="88" y2="12"/></svg></span></a>
+    <a class="logo" href="/" aria-label="Rekludo home">REKLUD<span class="oslash" aria-hidden="true">O<svg viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><line x1="12" y1="88" x2="88" y2="12" pathLength="1"/></svg></span></a>
     <div class="foot-links">
       <a href="https://manic.club/privacy/rekludo/">Privacy</a>
       <a href="https://manic.club/support/">Support</a>
@@ -145,6 +146,92 @@
   </div>
   <p class="foot-fine">iPhone is a trademark of Apple Inc. This site uses no cookies and no analytics.</p>
 </footer>
+<script>
+/* Rolling letters on load (like the app's Home screen): the logo and the headline roll through random letters and lock
+   left to right, the O's slash draws last. Plays once; skipped for reduced motion; afterwards the original markup is put back. */
+(function () {
+  var root = document.documentElement;
+  var targets = Array.prototype.slice.call(document.querySelectorAll('[data-roll]'));
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !targets.length || !window.requestAnimationFrame) { root.classList.add('roll-on'); return; }
+  var LETTERS = 'ABCDEFGHIJKLMNOPRSTUVY', TICK = 65;
+  function wrap(node, list) {
+    if (node.nodeType === 3) {
+      var frag = document.createDocumentFragment();
+      Array.prototype.forEach.call(node.nodeValue, function (ch) {
+        if (/\s/.test(ch)) { frag.appendChild(document.createTextNode(ch)); return; }
+        var s = document.createElement('span'); s.className = 'rc'; s.setAttribute('aria-hidden', 'true'); s.textContent = ch;
+        frag.appendChild(s); list.push({ el: s, ch: ch, i: list.length });
+      });
+      node.parentNode.replaceChild(frag, node);
+    } else if (node.nodeType === 1 && node.tagName.toLowerCase() !== 'svg') {
+      Array.prototype.slice.call(node.childNodes).forEach(function (n) { wrap(n, list); });
+    }
+  }
+  function prepare(el, delay, step, base) {
+    var job = { el: el, orig: el.innerHTML, list: [], delay: delay, started: false, done: false };
+    el.style.visibility = 'hidden';
+    Array.prototype.slice.call(el.childNodes).forEach(function (n) { wrap(n, job.list); });
+    job.list.forEach(function (l) { l.w = l.el.getBoundingClientRect().width; });
+    job.list.forEach(function (l) {          // fixed widths, so rolling letters never move the layout
+      l.el.style.display = 'inline-block'; l.el.style.width = l.w + 'px'; l.el.style.textAlign = 'center';
+      l.lock = delay + base + l.i * step;
+    });
+    measure(job);
+    el.classList.add('rolling');
+    return job;
+  }
+  function measure(job) {        // how wide every rolling letter is, so a wide letter can be squeezed into a narrow slot
+    var first = job.list[0]; job.cw = {};
+    if (!first) return;
+    var probe = first.el.cloneNode(false);
+    probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;width:auto;transform:none;display:inline-block';
+    first.el.parentNode.appendChild(probe);
+    for (var i = 0; i < LETTERS.length; i++) { probe.textContent = LETTERS.charAt(i); job.cw[LETTERS.charAt(i)] = probe.getBoundingClientRect().width; }
+    probe.parentNode.removeChild(probe);
+  }
+  function start() {
+    var jobs;
+    try {
+      jobs = [prepare(targets[0], 0, 60, 280)].concat(targets.slice(1).map(function (t) { return prepare(t, 200, 42, 380); }));
+    } catch (e) { root.classList.add('roll-on'); targets.forEach(function (t) { t.style.visibility = ''; }); return; }
+    root.classList.add('roll-on');
+    var t0 = performance.now();
+    (function frame(now) {
+      var t = now - t0, alive = false;
+      jobs.forEach(function (job) {
+        if (job.done) return;
+        if (t < job.delay) { alive = true; return; }
+        if (!job.started) { job.started = true; job.el.style.visibility = ''; }
+        var open = false;
+        job.list.forEach(function (l) {
+          var e = t - job.delay;
+          if (t < l.lock) {
+            open = true;
+            var b = Math.floor(e / TICK), p = (e % TICK) / TICK;
+            if (b !== l.b) { l.b = b; l.cur = LETTERS.charAt((b * 7 + l.i * 5) % LETTERS.length); l.el.textContent = l.cur; }
+            var sx = Math.min(1, l.w / (job.cw[l.cur] || l.w));
+            l.el.style.transform = 'scale(' + sx.toFixed(3) + ',' + Math.max(0.15, Math.abs(Math.cos(Math.PI * p))).toFixed(3) + ')';
+          } else {
+            if (!l.locked) {
+              l.locked = true; l.el.textContent = l.ch;
+              var o = l.el.closest ? l.el.closest('.oslash') : null; if (o) o.classList.add('draw');
+            }
+            var k = t - l.lock;
+            l.el.style.transform = k < 130 ? 'scale(' + (1 + 0.07 * (1 - k / 130)).toFixed(3) + ')' : '';
+            if (k < 330) open = true;      // keep going until the pop and the slash have finished
+          }
+        });
+        if (open) { alive = true; } else { job.el.innerHTML = job.orig; job.el.classList.remove('rolling'); job.done = true; }
+      });
+      if (alive) requestAnimationFrame(frame);
+    })(t0);
+  }
+  var go = function () { requestAnimationFrame(start); };
+  var timer = setTimeout(go, 1200);                       // never wait long for the font
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () { clearTimeout(timer); go(); });
+})();
+</script>
 <script>
 (function () {
   var v = document.getElementById('hero-video'), b = document.getElementById('vtoggle');
