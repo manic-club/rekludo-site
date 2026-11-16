@@ -10,6 +10,7 @@
 <link rel="canonical" href="https://rekludo.com/">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="preload" href="img/reveal-poster.jpg" as="image">
 <link rel="preload" href="fonts/BigShoulders.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 <meta property="og:type" content="website">
@@ -57,8 +58,14 @@
       </ul>
     </div>
     <div class="hero-phone">
-      <div class="phone tilt">
-        <img src="img/results.jpg" width="620" height="1347" alt="Rekludo round result: Matthew's guess of 2009 beats the crowd and lands closest to the answer, 2008" fetchpriority="high">
+      <div class="phone-col">
+        <div class="phone tilt">
+          <video id="hero-video" autoplay muted loop playsinline preload="auto" width="640" height="1390" poster="img/reveal-poster.jpg"
+                 aria-label="Rekludo reveal: the crowd's average lands at 301, the answer is 330, and three players beat the crowd and score">
+            <source src="video/reveal-hero.mp4" type="video/mp4">
+          </video>
+        </div>
+        <button id="vtoggle" class="vtoggle" type="button" aria-controls="hero-video" aria-pressed="false">Pause animation</button>
       </div>
     </div>
   </section>
@@ -138,5 +145,15 @@
   </div>
   <p class="foot-fine">iPhone is a trademark of Apple Inc. This site uses no cookies and no analytics.</p>
 </footer>
+<script>
+(function () {
+  var v = document.getElementById('hero-video'), b = document.getElementById('vtoggle');
+  if (!v || !b) return;
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { v.removeAttribute('autoplay'); v.pause(); }
+  function sync() { b.textContent = v.paused ? 'Play animation' : 'Pause animation'; b.setAttribute('aria-pressed', v.paused ? 'true' : 'false'); }
+  b.addEventListener('click', function () { if (v.paused) { v.play(); } else { v.pause(); } });
+  v.addEventListener('play', sync); v.addEventListener('pause', sync); sync();
+})();
+</script>
 </body>
 </html>

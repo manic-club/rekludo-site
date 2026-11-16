@@ -65,11 +65,15 @@ h2 { font-size: clamp(48px, 6vw, 80px); line-height: .95; margin: 12px 0 48px; }
 .hero .cap.note { margin-top: 22px; }
 .hero .fine { margin: 10px 0 0; font-size: 14px; color: var(--muted); }
 .hero-phone { flex: 0 1 340px; display: flex; justify-content: center; }
+.phone-col { display: flex; flex-direction: column; align-items: center; gap: 22px; }
+.vtoggle { font-family: var(--display); text-transform: uppercase; font-weight: 800; font-size: 14px; letter-spacing: .12em; color: var(--muted);
+  background: none; border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+.vtoggle:hover { color: var(--ink); border-color: var(--edge); }
 
 /* phone frame */
 .phone { width: 300px; border-radius: 46px; border: 10px solid #070B14; background: var(--board); overflow: hidden; flex: none;
   box-shadow: 0 30px 60px rgba(0, 0, 0, .45); }
-.phone img { display: block; width: 100%; height: auto; }
+.phone img, .phone video { display: block; width: 100%; height: auto; }
 .phone.small { width: 200px; border-width: 8px; border-radius: 34px; }
 .tilt { transform: rotate(3deg); }
 
