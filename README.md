@@ -13,11 +13,15 @@ Open `index.html` in a browser.
 | `fonts/` | Big Shoulders (SIL Open Font License, `OFL.txt` stays with it) |
 | `404.html`, `robots.txt`, `sitemap.xml` | Housekeeping |
 
-## Not live yet
-This repo is not published. To go live:
-1. Repo Settings, Pages, deploy from branch `main`, folder `/ (root)`.
-2. Add a `CNAME` file containing `rekludo.com`, then point the domain's DNS at GitHub Pages (A records for the apex, a CNAME for `www`), and tick "Enforce HTTPS".
-3. Link manic.club's "First up: RekludØ" line to rekludo.com.
+## Hosting
+GitHub Pages, from branch `main`, folder `/ (root)`. The custom domain is `rekludo.com` (the `CNAME` file; do not delete it).
+
+DNS at the registrar (remove any parking or forwarding records first):
+- `A` records for `rekludo.com`: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+- `AAAA` records for `rekludo.com`: `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153`
+- `CNAME` for `www`: `manic-club.github.io`
+
+When GitHub has checked the DNS, tick "Enforce HTTPS" in the repo's Pages settings. Optional but recommended: verify the domain for the manic-club organisation (org Settings, Pages, Add a domain, add the TXT record GitHub shows) so nobody else can claim it.
 
 ## Launch-day swaps
 - Replace both **Coming soon** buttons (hero and closing call) with the App Store badge linking to `https://apps.apple.com/app/id6835205482`.
