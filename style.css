@@ -133,18 +133,14 @@ h2 { font-size: clamp(48px, 6vw, 80px); line-height: .95; margin: 12px 0 48px; }
 
 /* the psychology bit */
 .why { padding: 96px 32px; }
-.why-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+.why-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 56px; align-items: start; }
 .why-text { font-size: 21px; line-height: 1.5; color: var(--soft); margin: 0 0 14px; max-width: 520px; }
-/* the magic formula: guesses -> average -> truth, with example numbers */
-.demo { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 14px 12px; margin: 0 0 32px; }
-.dg { display: flex; flex-direction: column; gap: 12px; }
-.dnums { display: flex; gap: 6px; }
-.num { display: inline-flex; align-items: center; justify-content: center; min-width: 58px; padding: 10px 12px; border-radius: 8px;
-  font-family: var(--display); font-weight: 900; font-size: 36px; line-height: 1; color: var(--ink);
-  background: linear-gradient(to bottom, #2B3650 0, #2B3650 48%, #0D1320 48%, #0D1320 52%, #252E42 52%); }
-.num.gold { color: var(--board); background: linear-gradient(to bottom, #FFD04D 0, #FFD04D 48%, #C99400 48%, #C99400 52%, #FFC21A 52%); }
-.demo .cap { font-size: 13px; }
-.fo { font-family: var(--display); font-weight: 900; font-size: 40px; line-height: 1; color: var(--signal); padding-top: 8px; }
+/* the magic formula: many guesses -> one average -> near the truth */
+.formula { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 14px; margin: 0 0 44px; }
+.ft { font-family: var(--display); text-transform: uppercase; font-weight: 900; font-size: clamp(24px, 3.4vw, 40px); letter-spacing: .04em; color: var(--ink);
+  padding: 14px 22px; border-radius: 10px; background: linear-gradient(to bottom, #2B3650 0, #2B3650 48%, #0D1320 48%, #0D1320 52%, #252E42 52%); }
+.ft.gold { color: var(--board); background: linear-gradient(to bottom, #FFD04D 0, #FFD04D 48%, #C99400 48%, #C99400 52%, #FFC21A 52%); }
+.fo { font-family: var(--display); font-weight: 900; font-size: clamp(28px, 3.6vw, 44px); line-height: 1; color: var(--signal); }
 .why h2 { margin-bottom: 28px; }
 .fact { margin: 0; background: var(--card); border-radius: 20px; padding: 36px; }
 .fact-tiles { display: flex; gap: 8px; }
@@ -155,4 +151,6 @@ h2 { font-size: clamp(48px, 6vw, 80px); line-height: .95; margin: 12px 0 48px; }
   .why { padding: 64px 20px; }
   .why-grid { grid-template-columns: 1fr; gap: 32px; }
   .chips li { font-size: 15px; }
+  .formula { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .fo { transform: rotate(90deg); margin-left: 22px; }
 }
